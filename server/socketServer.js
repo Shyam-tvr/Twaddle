@@ -10,8 +10,12 @@ const EditData = (data, id, call) => {
 export const SocketServer = (socket) => {
     // Connect - Disconnect
     socket.on('joinUser', user => {
+        console.log("connected")
         users.push({id: user._id, socketId: socket.id, followers: user.followers})
+        socket.emit("connected")
     })
+
+    socket.on('setup', console.log("something"))
 
     socket.on('disconnect', () => {
         const data = users.find(user => user.socketId === socket.id)

@@ -8,9 +8,15 @@ export const userCtrl = {
       const users = await Users.find({ username: { $regex: username } })
         .limit(10)
         .select("fullname username avatar");
-      res.json({ users });
+      if (users.length > 0) {
+        return res.status(200).json(users);
+      } else {
+        return res
+          .status(404)
+          .json({ error: "UsersNotFound", msg: "No users found." });
+      }
     } catch (err) {
-      return res.status(500).json({ msg: err.message });
+      return res.status(500).json({ error: "ServerError", msg: err.message });
     }
   },
   getUser: async (req, res) => {
@@ -20,29 +26,17 @@ export const userCtrl = {
         .populate("followers following", "-password");
       if (!user) return res.status(400).json({ msg: "User does not exist." });
 
-      res.json({ user });
+      res.status(200).json({ user });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
   },
   updateUser: async (req, res) => {
     try {
-      const { avatar, fullName, mobile, address, story, website, gender } =
-        req.body;
-
-      await Users.findOneAndUpdate(
-        { _id: req.user._id},
-        {
-          avatar,
-          fullName,
-          mobile,
-          address,
-          story,
-          website,
-          gender,
-        }
-      );
-      res.status(200).json({ msg: "Update Success!" });
+      const data = req.body;
+      console.log(data)
+      const user = await Users.findOneAndUpdate({ _id: req.user._id }, data).select("-password");
+      res.status(200).json({ msg: "Update Success!", user });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -52,12 +46,12 @@ export const userCtrl = {
     const paramsid = req.params.id;
     const id = paramsid.toString();
     const user = await Users.findById(user_id);
-   if( user?.following?.includes(id)){
-     const response = await unfollowUser(user_id, id);
-     return res.status(200).json({ msg: response.msg });
-    }else{
-      const response = await followUser(user_id, id)
-      return res.status(200).json({ msg: response.msg});
+    if (user?.following?.includes(id)) {
+      const response = await unfollowUser(user_id, id);
+      return res.status(200).json({ msg: response.msg });
+    } else {
+      const response = await followUser(user_id, id);
+      return res.status(200).json({ msg: response.msg });
     }
   },
   suggestionsUser: async (req, res) => {
@@ -84,11 +78,9 @@ export const userCtrl = {
         },
       ]).project("-password");
 
-      return res.json({
-        users,
-        result: users.length,
-      });
+      return res.status(200).json({ users });
     } catch (err) {
+      console.log(err.msg);
       return res.status(500).json({ msg: err.message });
     }
   },
@@ -105,7 +97,7 @@ const followUser = async (user_id, id) => {
       $push: {
         followers: user_id,
       },
-    });  
+    });
     return { msg: "You followed this user" };
   } catch (error) {
     return error;
