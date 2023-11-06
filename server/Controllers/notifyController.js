@@ -3,12 +3,11 @@ import { Notifies } from '../Models/notifyModel.js'
 export const notifyCtrl = {
     createNotify: async (req, res) => {
         try {
-            const { id, recipients, url, text, content, image } = req.body
 
-            if(recipients.includes(req.user._id.toString())) return;
+            // if(recipients.includes(req.user._id.toString())) return;
 
             const notify = new Notifies({
-                id, recipients, url, text, content, image, user: req.user._id
+                ...req.body, user: req.user._id
             })
 
             await notify.save()
@@ -30,9 +29,9 @@ export const notifyCtrl = {
     },
     getNotifies: async (req, res) => {
         try {
-            const notifies = await Notifies.find({recipients: req.user._id})
-            .sort('-createdAt').populate('user', 'avatar username')
-            
+            const notifies = await Notifies.find({recipients: req.user._id}).populate('user', 'fullName username avatar').populate('isLiked', 'files -_id')
+            .sort('-createdAt')
+            console.log(notifies)
             return res.json({notifies})
         } catch (err) {
             return res.status(500).json({msg: err.message})

@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useState } from 'react'
 import { Box, Grid, Typography } from '@mui/material'
-import Login from "../../Components/Login/Login"
-import Register from '../../Components/Register/Register';
+import Login from "../../Components/Auth/Login/Login"
+import Register from '../../Components/Auth/Register/Register';
 export const signupToggle = createContext();
 
 

@@ -1,0 +1,40 @@
+.stories{
+    background-color: #ffffff;
+    padding-top:18px;
+    padding-left: 2px;
+    height: 118px;
+    width: 100%;
+    border: 1px solid #dbdbdb;
+    box-sizing: border-box;
+    display: flex;
+    overflow: hidden;
+}
+.story{
+    width: 64px;
+    height: 90px;
+    margin-left: 1.5rem;
+}
+.story:hover{
+    cursor: pointer;
+}
+.storyBorder{
+    height: 60px;
+    width: 60px;
+    padding: 3px 0 0 3px;
+    border-radius: 50px;
+    background-color: #ffffff;
+    border: 2px solid #1976d2;
+}
+.span{
+    height: 56px;
+    width: 56px;
+    border-radius: 50px;
+    object-fit: cover;
+}
+.story-name{
+    margin: 0;
+    font-size: 12px;
+    margin-top: 4px;
+    width: 65px;
+    overflow: hidden;
+}

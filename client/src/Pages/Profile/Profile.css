@@ -1,0 +1,12 @@
+.test:hover .overlay {
+  z-index: 4 ;
+  background-color: rgba(0,0,0,0.7) ;
+}
+
+.cover_img:hover .cover-overlay{
+  opacity: 1 ;
+  background-color: rgba(0,0,0,0.7) ;
+}
+.css-e784if-MuiTypography-root{
+  cursor: pointer;
+}

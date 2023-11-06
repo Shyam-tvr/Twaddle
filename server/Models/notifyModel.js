@@ -8,7 +8,8 @@ const notifySchema = new mongoose.Schema({
     text: String,
     content: String,
     image: String,
-    isRead: {type: Boolean, default: false}
+    isRead: {type: Boolean, default: false},
+    isLiked: {type: mongoose.Types.ObjectId, ref: 'post'},
 }, {
     timestamps: true
 })
